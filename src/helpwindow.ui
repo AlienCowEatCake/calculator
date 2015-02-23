@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>HelpWindow</class>
+ <widget class="QWidget" name="HelpWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>290</width>
+    <height>192</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>290</width>
+    <height>192</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>290</width>
+    <height>192</height>
+   </size>
+  </property>
+  <property name="baseSize">
+   <size>
+    <width>290</width>
+    <height>192</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Help</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resources/icons.qrc">
+    <normaloff>:/icons/msgbox02.ico</normaloff>:/icons/msgbox02.ico</iconset>
+  </property>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>3</y>
+     <width>131</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Arithmetic</string>
+   </property>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>17</y>
+      <width>51</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>addition</string>
+    </property>
+    <property name="text">
+     <string>a+b</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>37</y>
+      <width>51</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>subtraction</string>
+    </property>
+    <property name="text">
+     <string>a-b</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>17</y>
+      <width>51</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>multiplication</string>
+    </property>
+    <property name="text">
+     <string>a*b</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>37</y>
+      <width>51</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>division</string>
+    </property>
+    <property name="text">
+     <string>a/b</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_2">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>3</y>
+     <width>131</width>
+     <height>141</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Trigonometric</string>
+   </property>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>17</y>
+      <width>51</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>sine</string>
+    </property>
+    <property name="text">
+     <string>sin(a)</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>37</y>
+      <width>51</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>cosine</string>
+    </property>
+    <property name="text">
+     <string>cos(a)</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_7">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>57</y>
+      <width>51</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>tangent</string>
+    </property>
+    <property name="text">
+     <string>tan(a)</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_8">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>97</y>
+      <width>51</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>arc cosine</string>
+    </property>
+    <property name="text">
+     <string>acos(a)</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_9">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>77</y>
+      <width>51</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>arc sine</string>
+    </property>
+    <property name="text">
+     <string>asin(a)</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_10">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>117</y>
+      <width>51</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>arc tangent</string>
+    </property>
+    <property name="text">
+     <string>atan(a)</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_11">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>37</y>
+      <width>51</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>hyperbolic cosine</string>
+    </property>
+    <property name="text">
+     <string>cosh(a)</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_12">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>77</y>
+      <width>51</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>arc hyperbolic sine</string>
+    </property>
+    <property name="text">
+     <string>asinh(a)</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_13">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>97</y>
+      <width>51</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>arc hyperbolic cosine</string>
+    </property>
+    <property name="text">
+     <string>acosh(a)</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_14">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>17</y>
+      <width>51</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>hyperbolic sine</string>
+    </property>
+    <property name="text">
+     <string>sinh(a)</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_15">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>117</y>
+      <width>51</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>arc hyperbolic tangent</string>
+    </property>
+    <property name="text">
+     <string>atanh(a)</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_16">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>57</y>
+      <width>51</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>hyperbolic tangent</string>
+    </property>
+    <property name="text">
+     <string>tanh(a)</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_3">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>63</y>
+     <width>131</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Power, Logarithmic</string>
+   </property>
+   <widget class="QLabel" name="label_17">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>17</y>
+      <width>51</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>raise to power</string>
+    </property>
+    <property name="text">
+     <string>a^b</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_18">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>37</y>
+      <width>51</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>square root</string>
+    </property>
+    <property name="text">
+     <string>sqrt(a)</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_19">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>17</y>
+      <width>51</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>natural logarithm</string>
+    </property>
+    <property name="text">
+     <string>log(a)</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_20">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>37</y>
+      <width>51</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>common logarithm</string>
+    </property>
+    <property name="text">
+     <string>log10(a)</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_4">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>143</y>
+     <width>131</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Other</string>
+   </property>
+   <widget class="QLabel" name="label_21">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>17</y>
+      <width>51</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>absolute value</string>
+    </property>
+    <property name="text">
+     <string>abs(a)</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_22">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>17</y>
+      <width>51</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>exponential function</string>
+    </property>
+    <property name="text">
+     <string>exp(a)</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_5">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>123</y>
+     <width>131</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Constants</string>
+   </property>
+   <widget class="QLabel" name="label_23">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>17</y>
+      <width>111</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>number pi</string>
+    </property>
+    <property name="text">
+     <string>pi = 3.14159265...</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_24">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>37</y>
+      <width>111</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>number e</string>
+    </property>
+    <property name="text">
+     <string>e = 2.718281828...</string>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources>
+  <include location="resources/icons.qrc"/>
+ </resources>
+ <connections/>
+</ui>

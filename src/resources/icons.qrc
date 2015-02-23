@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>icon.ico</file>
+        <file>msgbox02.ico</file>
+        <file>msgbox04.ico</file>
+    </qresource>
+</RCC>
