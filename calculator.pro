@@ -13,16 +13,18 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 INCLUDEPATH += src
 
-SOURCES += src/main.cpp \
-        src/mainwindow.cpp \
-        src/parser/parser.cpp \
+SOURCES += \
+    src/main.cpp \
+    src/mainwindow.cpp \
     src/helpwindow.cpp
 
-HEADERS  += src/mainwindow.h \
-            src/parser/parser.h \
+HEADERS  += \
+    src/mainwindow.h \
+    src/parser/parser.h \
     src/helpwindow.h
 
-FORMS    += src/mainwindow.ui \
+FORMS    += \
+    src/mainwindow.ui \
     src/helpwindow.ui
 
 RESOURCES += src/resources/icons.qrc

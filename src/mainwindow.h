@@ -52,7 +52,7 @@ private:
 
     HelpWindow * help;
 
-    parser p;
+    parser<double> p;
     void calc();
 };
 

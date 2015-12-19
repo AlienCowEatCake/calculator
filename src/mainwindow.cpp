@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2009, 2014
+   Copyright (C) 2009, 2014-2015
         Peter Zhigalov <peter.zhigalov@gmail.com>
 
    This file is part of the `calculator' program.
@@ -107,7 +107,7 @@ void MainWindow::on_pushButton_3_clicked()
     msgBox.setText(trUtf8("<b>Calculator v2.0</b><br>"
                           "<a href=\"http://fami-net.dlinkddns.com/osp/calculator/\">http://fami-net.dlinkddns.com/osp/calculator/</a><br>"
                           "License: <a href=\"http://www.gnu.org/copyleft/gpl.html\">GNU GPL v3</a><br><br>"
-                          "Copyright &copy; 2009, 2014<br>"
+                          "Copyright &copy; 2009, 2014-2015<br>"
                           "Zhigalov Peter &lt;<a href=\"mailto:peter.zhigalov@gmail.com\">peter.zhigalov@gmail.com</a>&gt;"));
     msgBox.setIcon(QMessageBox::Information);
     msgBox.setWindowIcon(QIcon(":/icons/msgbox04.ico"));
