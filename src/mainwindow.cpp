@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2009, 2014-2015
+   Copyright (C) 2009, 2014-2016
         Peter Zhigalov <peter.zhigalov@gmail.com>
 
    This file is part of the `calculator' program.
@@ -65,9 +65,9 @@ void MainWindow::calc()
     double z = ui->lineEdit_4->text().toDouble();
     QString text = ui->lineEdit->text();
     p.reset_const();
-    if(ui->lineEdit_2->text() != "") p.set_const("x", x);
-    if(ui->lineEdit_3->text() != "") p.set_const("y", y);
-    if(ui->lineEdit_4->text() != "") p.set_const("z", z);
+    if(ui->lineEdit_2->text() != "") p.set_var("x", x);
+    if(ui->lineEdit_3->text() != "") p.set_var("y", y);
+    if(ui->lineEdit_4->text() != "") p.set_var("z", z);
     bool status = p.parse(text.toStdString());
     text += "=";
     double result;
