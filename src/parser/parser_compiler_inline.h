@@ -1,15 +1,15 @@
-#if !defined PARSER_COMPILER_H
-#define PARSER_COMPILER_H
+#if !defined PARSER_COMPILER_INLINE_H
+#define PARSER_COMPILER_INLINE_H
 
 #include "parser.h"
 
 template<typename T>
-bool parser<T>::compile()
+bool parser<T>::compile_inline()
 {
 #if !defined PARSER_JIT_DISABLE
     using namespace std;
     using namespace parser_internal;
-    using namespace parser_opcodes_generator;
+    using namespace parser_opcodes;
 
     if(!is_parsed())
     {
@@ -1059,7 +1059,275 @@ bool parser<T>::compile()
                     fsqrt(curr);
                     fstp_ptr_real(curr, jit_stack_curr);
                 }
-                // TODO: asin acos atan sinh cosh tanh asinh acosh atanh
+                else if(fu == "asin" || fu == "acos")
+                {
+                    T * z = jit_stack_curr;
+                    T * tmp = jit_stack_curr + 1;
+                    // asin(z) = - i * log(i * z + sqrt((T)1 - z * z))
+                    // acos(z) = pi/2 - asin(z)
+                    //
+                    // 1 - z * z
+                    // 1-(a+bi)^2 = (1-aa+bb)-2abi
+                    fld_ptr_real(curr, z);
+                    fld_ptr_imag(curr, z);
+                    fldi(curr, 1);
+                    fldi(curr, 0);
+                    fmul(curr);
+                    fld1(curr);
+                    fsubr(curr);
+                    fldi(curr, 1);
+                    fldi(curr, 0);
+                    fmul(curr);
+                    fxch(curr);
+                    fadd(curr);
+                    fstp_ptr_real(curr, tmp);
+                    fmul(curr);
+                    fld1(curr);
+                    fld1(curr);
+                    fadd(curr);
+                    fmul(curr);
+                    fchs(curr);
+                    fstp_ptr_imag(curr, tmp);
+                    //
+                    // sqrt((T)1 - z * z)
+                    // sqrt(z) = sqrt((|z| + Re(z))/2) + i * sign(Im(z)) * sqrt((|z| - Re(z))/2)
+                    //
+                    // sign(Im(z))
+                    // TODO: EXTREMELY DANGEROUS MAGIC!
+                    fld_ptr_imag(curr, tmp);
+                    fldi(curr, 0);
+                    fabs(curr);
+                    fld1(curr);
+                    fld1(curr);
+                    fadd(curr);
+                    fdiv(curr);
+                    fsub(curr);
+                    fxtract(curr);
+                    fxch(curr);
+                    fstp_ptr_real(curr, tmp + 1);
+                    fldpi(curr);
+                    fdiv(curr);
+                    fld1(curr);
+                    fld1(curr);
+                    fadd(curr);
+                    fmul(curr);
+                    frndint(curr);
+                    //
+                    // |z|
+                    fld_ptr_imag(curr, tmp);
+                    fldi(curr, 0);
+                    fmul(curr);
+                    fld_ptr_real(curr, tmp);
+                    fldi(curr, 0);
+                    fmul(curr);
+                    fadd(curr);
+                    fsqrt(curr);
+                    fxch(curr);
+                    fldi(curr, 1);
+                    //
+                    // sqrt((|z| - Re(z))/2)
+                    fld_ptr_real(curr, tmp);
+                    fsub(curr);
+                    fld1(curr);
+                    fld1(curr);
+                    fadd(curr);
+                    fdiv(curr);
+                    fsqrt(curr);
+                    //
+                    // sign(Im(z)) * sqrt((|z| - Re(z))/2)
+                    fmul(curr);
+                    fstp_ptr_imag(curr, tmp);
+                    //
+                    // sqrt((|z| + Re(z))/2)
+                    fld_ptr_real(curr, tmp);
+                    fadd(curr);
+                    fld1(curr);
+                    fld1(curr);
+                    fadd(curr);
+                    fdiv(curr);
+                    fsqrt(curr);
+                    //fstp_ptr_real(curr, tmp);
+                    //
+                    // i * z + sqrt((T)1 - z * z)
+                    //fld_ptr_real(curr, tmp);
+                    fld_ptr_imag(curr, z);
+                    fsub(curr);
+                    fld_ptr_real(curr, z);
+                    fld_ptr_imag(curr, tmp);
+                    fadd(curr);
+                    fstp_ptr_imag(curr, tmp);
+                    fstp_ptr_real(curr, tmp);
+                    //
+                    // log(i * z + sqrt((T)1 - z * z))
+                    // log(z) = ln(abs(z))+i*arg(z)
+                    //
+                    // abs(z)
+                    fld_ptr_imag(curr, tmp);
+                    fldi(curr, 0);
+                    fmul(curr);
+                    fld_ptr_real(curr, tmp);
+                    fldi(curr, 0);
+                    fmul(curr);
+                    fadd(curr);
+                    fsqrt(curr);
+                    fldi(curr, 0);
+                    //
+                    // ln(abs(z))
+                    fld1(curr);
+                    fxch(curr);
+                    fyl2x(curr);
+                    fldl2e(curr);
+                    fdiv(curr);
+                    fxch(curr);
+                    //
+                    // arg(z)
+                    // arg(x + iy) = 2*atan((sqrt(x^2 + y^2) - x) / y) if y != 0
+                    // TODO: Hmm... Does it work if y == 0?
+                    fld_ptr_real(curr, tmp);
+                    fsub(curr);
+                    fld_ptr_imag(curr, tmp);
+                    fpatan(curr);
+                    fld1(curr);
+                    fld1(curr);
+                    fadd(curr);
+                    fmul(curr);
+                    //
+                    if(fu == "asin")
+                    {
+                        // asin(z) = - i * log(i * z + sqrt((T)1 - z * z))
+                        fstp_ptr_real(curr, jit_stack_curr);
+                        fchs(curr);
+                        fstp_ptr_imag(curr, jit_stack_curr);
+                    }
+                    else
+                    {
+                        // acos(z) = pi/2 - asin(z)
+                        fldpi(curr);
+                        fld1(curr);
+                        fld1(curr);
+                        fadd(curr);
+                        fdiv(curr);
+                        fsubr(curr);
+                        fstp_ptr_real(curr, jit_stack_curr);
+                        fstp_ptr_imag(curr, jit_stack_curr);
+                    }
+                }
+                else if(fu == "atan")
+                {
+                    T * z = jit_stack_curr;
+                    T * l1 = jit_stack_curr + 1;
+                    T * l2 = jit_stack_curr + 2;
+                    // atan(z) = i/2 * (log(1-zi)-log(zi+1));
+                    //
+                    // 1-zi, 1+zi
+                    fld_ptr_imag(curr, z);
+                    fldi(curr, 0);
+                    fld1(curr);
+                    fadd(curr);
+                    fstp_ptr_real(curr, l1);
+                    fld1(curr);
+                    fsubr(curr);
+                    fstp_ptr_real(curr, l2);
+                    fld_ptr_real(curr, z);
+                    fldi(curr, 0);
+                    fchs(curr);
+                    fstp_ptr_imag(curr, l1);
+                    fstp_ptr_imag(curr, l2);
+                    //
+                    // log(1-zi)
+                    // log(z) = ln(abs(z))+i*arg(z)
+                    //
+                    // abs(z)
+                    fld_ptr_imag(curr, l1);
+                    fldi(curr, 0);
+                    fmul(curr);
+                    fld_ptr_real(curr, l1);
+                    fldi(curr, 0);
+                    fmul(curr);
+                    fadd(curr);
+                    fsqrt(curr);
+                    fldi(curr, 0);
+                    //
+                    // ln(abs(z))
+                    fld1(curr);
+                    fxch(curr);
+                    fyl2x(curr);
+                    fldl2e(curr);
+                    fdiv(curr);
+                    fxch(curr);
+                    //
+                    // arg(z)
+                    // arg(x + iy) = 2*atan((sqrt(x^2 + y^2) - x) / y) if y != 0
+                    // TODO: Hmm... Does it work if y == 0?
+                    fld_ptr_real(curr, l1);
+                    fsub(curr);
+                    fld_ptr_imag(curr, l1);
+                    fpatan(curr);
+                    //fld1(curr);
+                    //fld1(curr);
+                    //fadd(curr);
+                    //fmul(curr);
+                    //
+                    fstp_ptr_imag(curr, l1);
+                    fstp_ptr_real(curr, l1);
+                    //
+                    // log(zi+1))
+                    // log(z) = ln(abs(z))+i*arg(z)
+                    //
+                    // abs(z)
+                    fld_ptr_imag(curr, l2);
+                    fldi(curr, 0);
+                    fmul(curr);
+                    fld_ptr_real(curr, l2);
+                    fldi(curr, 0);
+                    fmul(curr);
+                    fadd(curr);
+                    fsqrt(curr);
+                    fldi(curr, 0);
+                    //
+                    // ln(abs(z))
+                    fld1(curr);
+                    fxch(curr);
+                    fyl2x(curr);
+                    fldl2e(curr);
+                    fdiv(curr);
+                    fxch(curr);
+                    //
+                    // arg(z)
+                    // arg(x + iy) = 2*atan((sqrt(x^2 + y^2) - x) / y) if y != 0
+                    // TODO: Hmm... Does it work if y == 0?
+                    fld_ptr_real(curr, l2);
+                    fsub(curr);
+                    fld_ptr_imag(curr, l2);
+                    fpatan(curr);
+                    //fld1(curr);
+                    //fld1(curr);
+                    //fadd(curr);
+                    //fmul(curr);
+                    //
+                    fstp_ptr_imag(curr, l2);
+                    fstp_ptr_real(curr, l2);
+                    //
+                    // atan(z) = (i * (log(1-zi)-log(zi+1))) * 0.5;
+                    // (a+bi)*(c) = (ac)+(bc)i
+                    fld1(curr);
+                    fld1(curr);
+                    fadd(curr);
+                    fld1(curr);
+                    fdivr(curr);
+                    fld_ptr_imag(curr, l2);
+                    fld_ptr_imag(curr, l1);
+                    fsub(curr);
+                    //fldi(curr, 1);
+                    //fmul(curr);
+                    fstp_ptr_real(curr, jit_stack_curr);
+                    fld_ptr_real(curr, l1);
+                    fld_ptr_real(curr, l2);
+                    fsub(curr);
+                    fmul(curr);
+                    fstp_ptr_imag(curr, jit_stack_curr);
+                }
+                // TODO: atan sinh cosh tanh asinh acosh atanh
                 else
                 {
                     error_string = "Unsupported function " + it->str();
@@ -1100,5 +1368,5 @@ bool parser<T>::compile()
 #endif
 }
 
-#endif // PARSER_COMPILER_H
+#endif // PARSER_COMPILER_INLINE_H
 

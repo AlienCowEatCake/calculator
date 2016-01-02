@@ -24,7 +24,8 @@ HEADERS  += \
     src/parser/parser_internal.h \
     src/parser/parser_operations.h \
     src/parser/parser_opcodes.h \
-    src/parser/parser_compiler.h \
+    src/parser/parser_compiler_inline.h \
+    src/parser/parser_compiler_extcall.h \
     src/helpwindow.h
 
 FORMS    += \
