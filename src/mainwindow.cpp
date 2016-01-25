@@ -64,7 +64,7 @@ void MainWindow::calc()
     double y = ui->lineEdit_3->text().toDouble();
     double z = ui->lineEdit_4->text().toDouble();
     QString text = ui->lineEdit->text();
-    p.reset_const();
+    p.reset_vars();
     if(ui->lineEdit_2->text() != "") p.set_var("x", x);
     if(ui->lineEdit_3->text() != "") p.set_var("y", y);
     if(ui->lineEdit_4->text() != "") p.set_var("z", z);
@@ -105,9 +105,9 @@ void MainWindow::on_pushButton_3_clicked()
     msgBox.setDefaultButton(QMessageBox::Ok);
     msgBox.setWindowTitle("About");
     msgBox.setText(trUtf8("<b>Calculator v2.0</b><br>"
-                          "<a href=\"http://fami-net.dlinkddns.com/osp/calculator/\">http://fami-net.dlinkddns.com/osp/calculator/</a><br>"
+                          "<a href=\"https://fami.codefreak.ru/gitlab/peter/calculator\">https://fami.codefreak.ru/gitlab/peter/calculator</a><br>"
                           "License: <a href=\"http://www.gnu.org/copyleft/gpl.html\">GNU GPL v3</a><br><br>"
-                          "Copyright &copy; 2009, 2014-2015<br>"
+                          "Copyright &copy; 2009, 2014-2016<br>"
                           "Zhigalov Peter &lt;<a href=\"mailto:peter.zhigalov@gmail.com\">peter.zhigalov@gmail.com</a>&gt;"));
     msgBox.setIcon(QMessageBox::Information);
     msgBox.setWindowIcon(QIcon(":/icons/msgbox04.ico"));

@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2014
+   Copyright (C) 2014-2016
         Peter Zhigalov <peter.zhigalov@gmail.com>
 
    This file is part of the `calculator' program.
@@ -24,7 +24,7 @@
 #include <QMainWindow>
 #include <QString>
 #include "helpwindow.h"
-#include "parser/parser.h"
+#include "evaluator/evaluator.h"
 
 namespace Ui {
 class MainWindow;
@@ -52,7 +52,7 @@ private:
 
     HelpWindow * help;
 
-    parser<double> p;
+    evaluator<double> p;
     void calc();
 };
 
