@@ -5,6 +5,7 @@
 #include <complex>
 #include <limits>
 #include <cstring>
+#include <iostream>
 #include "../evaluator.h"
 #include "../evaluator_operations.h"
 
@@ -58,7 +59,7 @@ void evaluator<T>::init()
 #endif
     init_functions(functions);
     init_operators(operators);
-    init_variables(variables);
+    init_constants(constants);
 
     transition_table.resize(29);
     transition_table[ 0].set_values("func var const sign (",  1, false, false, false, true );
@@ -99,6 +100,7 @@ void evaluator<T>::copy_from_other(const evaluator & other)
     expression = other.expression;
     functions = other.functions;
     variables = other.variables;
+    constants = other.constants;
     operators = other.operators;
     status = other.status;
     error_string = other.error_string;
@@ -120,18 +122,21 @@ void evaluator<T>::reset_vars()
     using namespace std;
     using namespace evaluator_internal;
     variables.clear();
-    init_variables(variables);
     if(is_parsed())
         for(typename vector<evaluator_object<T> >::iterator
             it = expression.begin(); it != expression.end(); ++it)
-            variables[it->str()].value() = incorrect_number(T());
+            if(it->is_variable())
+            {
+                variables[it->str()].value() = incorrect_number(T());
+                *it = evaluator_object<T>(it->str(), variables[it->str()].pointer());
+            }
 }
 
 // Constructors and destructor
 template<typename T>
 evaluator<T>::evaluator(const evaluator & other)
 {
-    copy_from_other_parser(other);
+    copy_from_other(other);
 }
 
 template<typename T>
@@ -169,6 +174,24 @@ const evaluator<T> & evaluator<T>::operator = (const evaluator & other)
     if(this != &other)
         copy_from_other(other);
     return * this;
+}
+
+// Print expression
+template<typename T>
+void evaluator<T>::debug_print() const
+{
+    using namespace std;
+    using namespace evaluator_internal;
+    for(typename vector<evaluator_object<T> >::const_iterator
+        it = expression.begin(); it != expression.end(); ++it)
+    {
+        cout << it->str();
+        if(it->is_variable())
+            cout << "->" << it->eval() << ' ';
+        else
+            cout << ' ';
+    }
+    cout << endl;
 }
 
 #endif // MISC_H
