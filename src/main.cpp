@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2014
+   Copyright (C) 2014, 2016
         Peter Zhigalov <peter.zhigalov@gmail.com>
 
    This file is part of the `calculator' program.
@@ -24,6 +24,11 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    a.setOrganizationDomain(QString::fromLatin1("fami.codefreak.ru"));
+    a.setOrganizationName(QString::fromLatin1("FAMI Net Team"));
+    a.setApplicationName(QString::fromLatin1("Calculator"));
+    a.setApplicationVersion(QString::fromLatin1("2.0"));
+
     MainWindow w;
     w.show();
 

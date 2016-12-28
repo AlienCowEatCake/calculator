@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2014
+   Copyright (C) 2014, 2016
         Peter Zhigalov <peter.zhigalov@gmail.com>
 
    This file is part of the `calculator' program.
@@ -24,23 +24,34 @@
 #include <QDesktopWidget>
 #include <QPoint>
 
-HelpWindow::HelpWindow(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::HelpWindow)
+HelpWindow::HelpWindow(QWidget *parent)
+    : QWidget(parent)
+    , m_ui(new Ui::HelpWindow)
 {
-    ui->setupUi(this);
+    m_ui->setupUi(this);
 
-    QPoint center = QApplication::desktop()->availableGeometry().center();
-    QPoint corner = QApplication::desktop()->availableGeometry().topLeft();
-    center.setX(center.x() - this->width() / 2);
-    center.setY(center.y() - this->height() / 2);
-    if(center.x() <= corner.x() || center.y() <= corner.y())
-        this->move(corner);
+    QPoint center;
+    if(parent)
+        center = parent->geometry().center();
     else
-        this->move(center);
+        center = QApplication::desktop()->availableGeometry().center();
+    QPoint corner = QApplication::desktop()->availableGeometry().topLeft();
+    center.setX(center.x() - width() / 2);
+    center.setY(center.y() - height() / 2);
+    if(center.x() <= corner.x() || center.y() <= corner.y())
+        move(corner);
+    else
+        move(center);
+
+    setWindowFlags(Qt::Dialog
+                 | Qt::MSWindowsFixedSizeDialogHint
+                 | Qt::CustomizeWindowHint
+                 | Qt::WindowTitleHint
+                 | Qt::WindowCloseButtonHint
+                  );
 }
 
 HelpWindow::~HelpWindow()
 {
-    delete ui;
+    delete m_ui;
 }

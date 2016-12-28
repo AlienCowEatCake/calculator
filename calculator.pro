@@ -13,6 +13,13 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 INCLUDEPATH += src
 
+DEFINES += QT_NO_CAST_FROM_ASCII
+
+*g++*|*clang* {
+    QMAKE_CXXFLAGS *= -Wno-long-long
+    QMAKE_CXXFLAGS_RELEASE *= -DNDEBUG
+}
+
 SOURCES += \
     src/evaluator/evaluator_internal/transition_table.cpp \
     src/evaluator/evaluator_internal/jit/common.cpp \

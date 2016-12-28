@@ -48,11 +48,11 @@ private slots:
     void on_pushButton_2_clicked();
 
 private:
-    Ui::MainWindow *ui;
+    Ui::MainWindow *m_ui;
 
-    HelpWindow * help;
+    HelpWindow *m_helpWindow;
 
-    evaluator<double> p;
+    evaluator<double> m_evaluator;
     void calc();
 };
 

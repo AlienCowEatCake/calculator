@@ -26,65 +26,74 @@
 #include <QPoint>
 #include <QMessageBox>
 
-using namespace std;
-
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , m_ui(new Ui::MainWindow)
+    , m_helpWindow(NULL)
 {
-    ui->setupUi(this);
-    ui->plainTextEdit->setReadOnly(true);
+    m_ui->setupUi(this);
+    m_ui->plainTextEdit->setReadOnly(true);
 
-    QPalette palette = ui->plainTextEdit->palette();
+    QPalette palette = m_ui->plainTextEdit->palette();
     palette.setColor(QPalette::Base, palette.color(QPalette::Window));
-    ui->plainTextEdit->setPalette(palette);
+    m_ui->plainTextEdit->setPalette(palette);
 
-    QPoint center = QApplication::desktop()->availableGeometry().center();
-    QPoint corner = QApplication::desktop()->availableGeometry().topLeft();
-    center.setX(center.x() - this->width() / 2);
-    center.setY(center.y() - this->height() / 2);
-    if(center.x() <= corner.x() || center.y() <= corner.y())
-        this->move(corner);
+    QPoint center;
+    if(parent)
+        center = parent->geometry().center();
     else
-        this->move(center);
-
-    help = NULL;
+        center = QApplication::desktop()->availableGeometry().center();
+    QPoint corner = QApplication::desktop()->availableGeometry().topLeft();
+    center.setX(center.x() - width() / 2);
+    center.setY(center.y() - height() / 2);
+    if(center.x() <= corner.x() || center.y() <= corner.y())
+        move(corner);
+    else
+        move(center);
 }
 
 MainWindow::~MainWindow()
 {
-    if(help) delete help;
-    delete ui;
+    if(m_helpWindow)
+        delete m_helpWindow;
+    delete m_ui;
 }
 
 void MainWindow::calc()
 {
-    if(ui->lineEdit->text() == "") return;
-    double x = ui->lineEdit_2->text().toDouble();
-    double y = ui->lineEdit_3->text().toDouble();
-    double z = ui->lineEdit_4->text().toDouble();
-    QString text = ui->lineEdit->text();
-    p.reset_vars();
-    if(ui->lineEdit_2->text() != "") p.set_var("x", x);
-    if(ui->lineEdit_3->text() != "") p.set_var("y", y);
-    if(ui->lineEdit_4->text() != "") p.set_var("z", z);
-    bool status = p.parse(text.toStdString());
-    text += "=";
+    if(m_ui->lineEdit->text().isEmpty())
+        return;
+    const double x = m_ui->lineEdit_2->text().toDouble();
+    const double y = m_ui->lineEdit_3->text().toDouble();
+    const double z = m_ui->lineEdit_4->text().toDouble();
+    QString text = m_ui->lineEdit->text();
+    m_evaluator.reset_vars();
+    if(!m_ui->lineEdit_2->text().isEmpty())
+        m_evaluator.set_var("x", x);
+    if(!m_ui->lineEdit_3->text().isEmpty())
+        m_evaluator.set_var("y", y);
+    if(!m_ui->lineEdit_4->text().isEmpty())
+        m_evaluator.set_var("z", z);
+    bool status = m_evaluator.parse(text.toStdString());
+    text += QString::fromLatin1("=");
     double result;
-    if(status && p.calculate(result))
+    if(status && m_evaluator.calculate(result))
     {
         text += QString::number(result);
-        if(ui->lineEdit_2->text() != "") text += "   [x=" + QString::number(x) + "]";
-        if(ui->lineEdit_3->text() != "") text += "   [y=" + QString::number(y) + "]";
-        if(ui->lineEdit_4->text() != "") text += "   [z=" + QString::number(z) + "]";
-        ui->lineEdit->setText(QString::number(result));
+        if(!m_ui->lineEdit_2->text().isEmpty())
+            text += QString::fromLatin1("   [x=") + QString::number(x) + QString::fromLatin1("]");
+        if(!m_ui->lineEdit_3->text().isEmpty())
+            text += QString::fromLatin1("   [y=") + QString::number(y) + QString::fromLatin1("]");
+        if(!m_ui->lineEdit_4->text().isEmpty())
+            text += QString::fromLatin1("   [z=") + QString::number(z) + QString::fromLatin1("]");
+        m_ui->lineEdit->setText(QString::number(result));
     }
     else
     {
-        text += "ERROR: " + QString(p.get_error().c_str());
+        text += tr("ERROR: ") + QString::fromUtf8(m_evaluator.get_error().c_str());
     }
-    ui->plainTextEdit->appendPlainText(text);
-    ui->lineEdit->setFocus();
+    m_ui->plainTextEdit->appendPlainText(text);
+    m_ui->lineEdit->setFocus();
 }
 
 void MainWindow::on_lineEdit_returnPressed()
@@ -99,16 +108,20 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_pushButton_3_clicked()
 {
-    QMessageBox msgBox;
-    msgBox.setAttribute(Qt::WA_QuitOnClose);
+    QMessageBox msgBox(this);
     msgBox.setStandardButtons(QMessageBox::Ok);
     msgBox.setDefaultButton(QMessageBox::Ok);
-    msgBox.setWindowTitle("About");
-    msgBox.setText(trUtf8("<b>Calculator v2.0</b><br>"
-                          "<a href=\"https://fami.codefreak.ru/gitlab/peter/calculator\">https://fami.codefreak.ru/gitlab/peter/calculator</a><br>"
-                          "License: <a href=\"http://www.gnu.org/copyleft/gpl.html\">GNU GPL v3</a><br><br>"
-                          "Copyright &copy; 2009, 2014-2016<br>"
-                          "Zhigalov Peter &lt;<a href=\"mailto:peter.zhigalov@gmail.com\">peter.zhigalov@gmail.com</a>&gt;"));
+    msgBox.setWindowTitle(tr("About"));
+    msgBox.setText(tr("<b>Calculator v%1</b>").arg(QString::fromLatin1("2.0")));
+    msgBox.setInformativeText(QString::fromLatin1(
+                      "<a href=\"https://fami.codefreak.ru/gitlab/peter/calculator\">https://fami.codefreak.ru/gitlab/peter/calculator</a><br>"
+                      "%1: <a href=\"http://www.gnu.org/copyleft/gpl.html\">GNU GPL v3</a><br><br>"
+                      "Copyright &copy; 2014-2016<br>"
+                      "%2 &lt;<a href=\"mailto:peter.zhigalov@gmail.com\">peter.zhigalov@gmail.com</a>&gt;"
+                      ).arg(tr("License")).arg(tr("Peter Zhigalov")));
+    const QList<QLabel*> labels = msgBox.findChildren<QLabel*>();
+    for(QList<QLabel*>::ConstIterator it = labels.begin(); it != labels.end(); ++it)
+        (*it)->setWordWrap(false);
     msgBox.setIcon(QMessageBox::Information);
     msgBox.setWindowIcon(QIcon(":/icons/msgbox04.ico"));
     msgBox.exec();
@@ -116,18 +129,9 @@ void MainWindow::on_pushButton_3_clicked()
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    if(help && help->isVisible())
-    {
-        delete help;
-        help = NULL;
-    }
-    else if(help)
-    {
-        help->show();
-    }
-    else
-    {
-        help = new HelpWindow;
-        help->show();
-    }
+    if(!m_helpWindow)
+        m_helpWindow = new HelpWindow(this);
+    m_helpWindow->show();
+    m_helpWindow->raise();
+    m_helpWindow->activateWindow();
 }

@@ -1,5 +1,5 @@
 /*
-   Copyright (C) 2014
+   Copyright (C) 2014, 2016
         Peter Zhigalov <peter.zhigalov@gmail.com>
 
    This file is part of the `calculator' program.
@@ -36,7 +36,7 @@ public:
     ~HelpWindow();
 
 private:
-    Ui::HelpWindow *ui;
+    Ui::HelpWindow *m_ui;
 };
 
 #endif // HELPWINDOW_H
