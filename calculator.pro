@@ -26,9 +26,11 @@ SOURCES += \
 HEADERS  += \
     src/evaluator/evaluator.h \
     src/evaluator/evaluator_operations.h \
+    src/evaluator/evaluator_xyz.h \
     src/evaluator/evaluator_internal/evaluator_object.h \
     src/evaluator/evaluator_internal/var_container.h \
     src/evaluator/evaluator_internal/transition_table.h \
+    src/evaluator/evaluator_internal/type_detection.h \
     src/evaluator/evaluator_internal/misc.h \
     src/evaluator/evaluator_internal/parse.h \
     src/evaluator/evaluator_internal/simplify.h \

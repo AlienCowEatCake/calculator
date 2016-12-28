@@ -1,4 +1,4 @@
-#ifndef TRANSITION_TABLE_H
+#if !defined(TRANSITION_TABLE_H)
 #define TRANSITION_TABLE_H
 
 #include <vector>
@@ -8,10 +8,8 @@ namespace evaluator_internal
 {
 
 // State transition table record
-class transition_table_record
+struct transition_table_record
 {
-public:
-
     std::vector<std::string> Terminals;
     int Jump;
     bool Accept;
