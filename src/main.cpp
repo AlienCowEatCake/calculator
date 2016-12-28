@@ -20,6 +20,7 @@
 
 #include "mainwindow.h"
 #include <QApplication>
+#include <QStyleFactory>
 
 int main(int argc, char *argv[])
 {
@@ -28,6 +29,7 @@ int main(int argc, char *argv[])
     a.setOrganizationName(QString::fromLatin1("FAMI Net Team"));
     a.setApplicationName(QString::fromLatin1("Calculator"));
     a.setApplicationVersion(QString::fromLatin1("2.0"));
+    a.setStyle(QStyleFactory::create(QString::fromLatin1("windows")));
 
     MainWindow w;
     w.show();
